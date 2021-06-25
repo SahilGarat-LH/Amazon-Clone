@@ -1,41 +1,42 @@
 import Head from "next/head";
+import Header from "../Components/Header";
+import Banner from "../Components/Banner";
+import ProductFeed from "../Components/ProductFeed";
 
-export default function Home() {
+export default function Home({products}) {
   return (
-    <div>
+    <div className='bg-gray-100'>
       <Head>
-        <title>Amazon 2.0</title>
+        <title>Amazon</title>
       </Head>
 
-      {/* ---- TO BEGIN, delete this section and GET CODING!!! ---- */}
-      <center className="grid place-items-center mt-10">
-        <h1 className="text-5xl">Lets build Amazon 2.0</h1>
-        <h2>This is your starter template!</h2>
-        <br />
-        <h3 className="font-bold">
-          We will be using Next.js / Tailwind CSS / Redux / Firebase / NextAuth
-        </h3>
-        <i>(Dont worry, its all setup and ready to use!)</i>
-        <h4>Get Ready, Get Set, GO!!!</h4>
+      
+      {/* Header */}
+      <Header/>
 
-        <h5 className="mb-10">#PAPAFAM</h5>
+      <main className='max-w-screen-2xl mx-auto'>
+        {/* Banner */}
+        <Banner />
 
-        <div className="bg-red-300 p-10">
-          <p className="font-bold">
-            Dont forget to register for the challenge here!
-          </p>
-          <p>👇👇👇</p>
-          <a
-            href="https://www.papareact.com/secret-challenge"
-            className="text-blue-400 underline p-3 font-bold"
-          >
-            CLICK HERE TO REGISTER NOW
-          </a>
-        </div>
-
-        <p className="mt-24">Built with 💙 by Sonny Sangha (PAPA REACT)</p>
-      </center>
-      {/* ---- ---- */}
+        {/* Product Feed */}
+      <ProductFeed products={products}/>
+      </main>
+            
     </div>
   );
 }
+
+// When we need to do server side rendering as in our case for NEXT.js
+// This below line tells the nextjs that it is not a static website and it needs to habe that middle server 
+export async function getServerSideProps(context){
+  const products=await fetch('https://fakestoreapi.com/products')
+  .then(response=>response.json())
+  return {props:{
+    // What comes from api is products so as es6 provide the same for the below we use directly products
+    // products:products
+    products
+  }} 
+}
+
+
+// GET>>>>>https://fakestoreapi.com/products
